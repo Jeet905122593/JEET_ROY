@@ -32,19 +32,60 @@ import os
 #     else:
 #         print("❌ Not reachable\n")
 
+# import yaml
+# import os
+# from netmiko import ConnectHandler
+
+# # Project root path
+# base_dir = os.path.dirname(os.path.dirname(__file__))
+# inventory_path = os.path.join(base_dir, "inventory", "devices.yaml")
+
+# # Load YAML
+# with open(inventory_path) as file:
+#     data = yaml.safe_load(file)
+
+# # Loop through devices
+# for device in data["devices"]:
+#     print(f"\nConnecting to {device['name']} ({device['host']})")
+
+#     try:
+#         connection = ConnectHandler(
+#             device_type=device["device_type"],
+#             host=device["host"],
+#             username=device["username"],
+#             password=device["password"],
+#         )
+
+#         output = connection.send_command("show version")
+#         print("✅ SSH Success")
+#         print(output)
+
+#         connection.disconnect()
+
+#     except Exception as e:
+#         print("❌ SSH Failed")
+#         print(e)
+
 import yaml
 import os
 from netmiko import ConnectHandler
+from jinja2 import Environment, FileSystemLoader
 
-# Project root path
+# Project base path
 base_dir = os.path.dirname(os.path.dirname(__file__))
+
+# Inventory path
 inventory_path = os.path.join(base_dir, "inventory", "devices.yaml")
 
-# Load YAML
+# Template loader
+env = Environment(loader=FileSystemLoader(os.path.join(base_dir, "templates")))
+template = env.get_template("vlan_template.j2")
+
+# Load inventory
 with open(inventory_path) as file:
     data = yaml.safe_load(file)
 
-# Loop through devices
+# Loop devices
 for device in data["devices"]:
     print(f"\nConnecting to {device['name']} ({device['host']})")
 
@@ -56,12 +97,22 @@ for device in data["devices"]:
             password=device["password"],
         )
 
-        output = connection.send_command("show version")
-        print("✅ SSH Success")
+        # Render template
+        config = template.render(
+            vlan_id=device["vlan_id"],
+            vlan_name=device["vlan_name"]
+        )
+
+        print("Generated Config:")
+        print(config)
+
+        # Push config
+        output = connection.send_config_set(config.split("\n"))
         print(output)
 
         connection.disconnect()
+        print("✅ VLAN Config Pushed Successfully")
 
     except Exception as e:
-        print("❌ SSH Failed")
+        print("❌ Failed")
         print(e)

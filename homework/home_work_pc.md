@@ -60,6 +60,12 @@ write memory
 ==================================================================================================
 inventory==> device.yaml
 scripts ==> ping_test.py
+templates  ==> vlan.j2
+
+JEET_ROY
+ ├── inventory
+ ├── scripts
+ └── templates
 
 From vscode terminal:
 
