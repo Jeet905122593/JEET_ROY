@@ -1,0 +1,15 @@
+devices:
+
+  - name: HANA-SW
+    role: access
+    device_type: arista_eos
+    host: 192.168.187.221
+    username: admin
+    password: admin
+
+  - name: STR-SW
+    role: access
+    device_type: arista_eos
+    host: 192.168.187.222
+    username: admin
+    password: admin
