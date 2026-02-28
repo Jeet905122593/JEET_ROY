@@ -122,3 +122,33 @@ git commit -m "Describe what you changed"
 ### To Push
 git push origin main
 
+==================show_version.yml under playbooks===========================
+---
+- name: Show version from Arista
+  hosts: arista
+  gather_facts: no
+
+  tasks:
+
+    - name: Run show version
+      arista.eos.eos_command:
+        commands:
+          - show version
+      register: output
+
+    - name: Print output
+      debug:
+        var: output.stdout_lines
+
+==================hosts.ini under inventory===========================
+
+[arista]
+
+hana-veos ansible_host=192.168.187.221
+str-veos  ansible_host=192.168.187.222
+
+[arista:vars]
+ansible_user=admin
+ansible_password=admin
+ansible_connection=network_cli
+ansible_network_os=arista.eos.eos
