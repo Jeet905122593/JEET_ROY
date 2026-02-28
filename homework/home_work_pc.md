@@ -58,59 +58,67 @@ management ssh
  no shutdown
 write memory
 ==================================================================================================
-inventory==> device.yaml
-scripts ==> ping_test.py
-templates  ==> vlan.j2
+i
+======================================================================
+step-1:
 
-JEET_ROY
- ├── inventory
- ├── scripts
- └── templates
+Before installing anything, tell Ubuntu to refresh its list of available software.
 
-From vscode terminal:
+sudo apt update
+sudo apt upgrade -y
+sudo apt install git -y
+sudo apt install python3-pip python3-venv -y
+sudo apt install python3-paramiko -y
+=> to check need to run : python3 -c "import paramiko; print('Paramiko OK')"
 
-PS C:\Users\JEET_NILADRI\Documents\GitHub\JEET_ROY> dir
+cd ~
+git clone https://github.com/Jeet905122593/JEET_ROY.git  ( to Fetch with GitHub repo)
+cd JEET_ROY
+ls
 
-
-    Directory: C:\Users\JEET_NILADRI\Documents\GitHub\JEET_ROY
-
-
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
-d-----         2/23/2026  12:28 AM                inventory
-d-----         2/23/2026  12:07 AM                scripts
--a----         2/23/2026  12:03 AM          35817 Cisco-vrf-aware-ipsec-vpn.md
--a----         2/23/2026  12:03 AM          18897 Cloud Peering_TEST_JEET.md
--a----         2/18/2026  10:11 PM            625 Data Traffic Flow via Squid Proxy _ HEC2.0.md
--a----         2/18/2026  10:11 PM          33159 hcsm-useful-comments.md
--a----         2/18/2026  10:11 PM          10557 hec01-rdk-outbound.md
--a----         2/23/2026  12:22 AM          25540 runbook.md
--a----         2/18/2026  10:11 PM          15899 vpn-traffic-flow.md
-
-
-PS C:\Users\JEET_NILADRI\Documents\GitHub\JEET_ROY> dir inventory
-
-
-    Directory: C:\Users\JEET_NILADRI\Documents\GitHub\JEET_ROY\inventory
-
-
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
-d-----         2/23/2026  12:18 AM                sap_proj
--a----         2/23/2026  12:28 AM            283 devices.yaml
-
-
-PS C:\Users\JEET_NILADRI\Documents\GitHub\JEET_ROY> dir scripts
+ssh admin@192.168.187.221
+ssh admin@192.168.187.222
+==============For devices====================
+conf t
+  interface ethernet 9
+  no shutdown
+  no switchport
+  ip add 192.168.187.222 255.255.255.0
+  exit
+username admin privilege 15 secret admin
+management ssh
+ no shutdown
+write memory
+==================================
+From scratch/power off Ubuntu VM, we need to cd ~/JEET_ROY 
+Note1: 
+If you want to go Inventory then cd ~/JEET_ROY/basic-automation/inventory
+If you need remove any file  rm -r hosts.ini
+To check in the folder ls -l or ls
+To fetch with GitHub to VSCODE:
+cd ~/JEET_ROY
+code .
 
 
-    Directory: C:\Users\JEET_NILADRI\Documents\GitHub\JEET_ROY\scripts
+jeet@jeet-VMware-Virtual-Platform:~$ cd ~/JEET_ROY
+jeet@jeet-VMware-Virtual-Platform:~/JEET_ROY$ mkdir basic-automation
+jeet@jeet-VMware-Virtual-Platform:~/JEET_ROY$ cd basic-automation
+jeet@jeet-VMware-Virtual-Platform:~/JEET_ROY/basic-automation$ mkdir inventory playbooks templates vars output
+jeet@jeet-VMware-Virtual-Platform:~/JEET_ROY/basic-automation$ ls
+inventory  output  playbooks  templates  vars
 
 
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
--a----         2/23/2026  12:07 AM           1773 ping_test1.py
 
+Note2: Make sure you will create file & write something.
+### To Check changes
+git status
 
-PS C:\Users\JEET_NILADRI\Documents\GitHub\JEET_ROY>
+### To Add
+git add 
 
-```
+### To Commit
+git commit -m "Describe what you changed"
+
+### To Push
+git push origin main
+
