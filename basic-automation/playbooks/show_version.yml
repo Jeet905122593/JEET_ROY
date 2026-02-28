@@ -1,0 +1,16 @@
+---
+- name: Show version from Arista
+  hosts: arista
+  gather_facts: no
+
+  tasks:
+
+    - name: Run show version
+      arista.eos.eos_command:
+        commands:
+          - show version
+      register: output
+
+    - name: Print output
+      debug:
+        var: output.stdout_lines
